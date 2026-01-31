@@ -203,6 +203,32 @@ The debate will:
 
 ---
 
+## Using 1Password for API Keys
+
+If you use 1Password, you can store API keys securely and inject them at runtime.
+
+1. **Store your keys in 1Password** (e.g., in a vault called "Private")
+
+2. **Update your .env file with `op://` references:**
+   ```
+   ANTHROPIC_API_KEY="op://Private/Anthropic API/password"
+   OPENAI_API_KEY="op://Private/OpenAI API/password"
+   GOOGLE_API_KEY="op://Private/Google AI/password"
+   XAI_API_KEY="op://Private/xAI API/password"
+   ```
+
+3. **Run using the 1Password wrapper script:**
+   ```bash
+   ./scripts/run.sh
+
+   # Or with a custom topic
+   ./scripts/run.sh "Resolved: Your topic here"
+   ```
+
+The script uses `op run` to resolve secrets from 1Password before executing.
+
+---
+
 ## Cost Estimates
 
 A single Lincoln-Douglas debate uses approximately:
