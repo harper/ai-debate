@@ -5,6 +5,11 @@ import asyncio
 import sys
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 from ai_debate.debate import DebateEngine, transcript_to_markdown
 from ai_debate.models import AnthropicModel, OpenAIModel
 
