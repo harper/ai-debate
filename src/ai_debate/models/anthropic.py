@@ -12,7 +12,7 @@ from ai_debate.models.base import Message, ModelResponse, Role
 class AnthropicModel:
     """Adapter for Anthropic Claude models."""
 
-    model_id: str = "claude-opus-4-5-20251124"
+    model_id: str = "claude-opus-4-5-20251101"
     name: str = "Claude Opus 4.5"
     provider: str = "Anthropic"
     temperature: float = 0.7

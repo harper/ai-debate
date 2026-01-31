@@ -65,10 +65,10 @@ Each debate is evaluated by:
 ## Models
 
 Initial lineup (latest flagship reasoning models as of Jan 2026):
-- **Claude** (Anthropic) - `claude-opus-4-5-20251124` - Anthropic's most intelligent model
+- **Claude** (Anthropic) - `claude-opus-4-5-20251101` - Anthropic's most intelligent model
 - **GPT-5.2** (OpenAI) - `gpt-5.2` - OpenAI's flagship model (supersedes o3)
-- **Gemini** (Google) - `gemini-3-pro` with Deep Think - Google's most capable reasoning model
-- **Grok** (xAI) - `grok-4.1` - xAI's latest, #1 on LMArena leaderboard
+- **Gemini** (Google) - `gemini-3-pro-preview` - Google's most capable reasoning model (in preview)
+- **Grok** (xAI) - `grok-4` - xAI's flagship model with native tool use
 
 ## Topics
 

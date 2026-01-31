@@ -8,14 +8,18 @@ from ai_debate.models.base import (
     ModelResponse,
     Role,
 )
+from ai_debate.models.google import GoogleModel
 from ai_debate.models.openai import OpenAIModel
+from ai_debate.models.xai import XAIModel
 
 __all__ = [
     "AnthropicModel",
     "DebateModel",
+    "GoogleModel",
     "Message",
     "ModelConfig",
     "ModelResponse",
     "OpenAIModel",
     "Role",
+    "XAIModel",
 ]

@@ -49,7 +49,9 @@ uv run python scripts/run_debate.py
    ANTHROPIC_API_KEY=sk-ant-api03-xxxxx...
    ```
 
-**Pricing:** ~$15/million input tokens, ~$75/million output tokens for Opus 4.5
+**Model ID:** `claude-opus-4-5-20251101`
+
+**Pricing:** $5/million input tokens, $25/million output tokens for Opus 4.5
 
 ---
 
@@ -84,7 +86,9 @@ uv run python scripts/run_debate.py
    OPENAI_API_KEY=sk-proj-xxxxx...
    ```
 
-**Pricing:** ~$2.50/million input tokens, ~$10/million output tokens for GPT-5.2
+**Model ID:** `gpt-5.2`
+
+**Pricing:** $1.75/million input tokens, $14/million output tokens for GPT-5.2 (90% discount on cached inputs)
 
 ---
 
@@ -109,7 +113,9 @@ uv run python scripts/run_debate.py
    GOOGLE_API_KEY=AIzaSy...
    ```
 
-**Free tier:** 5 requests/minute for Gemini 3 Pro (may need paid tier for debates)
+**Model ID:** `gemini-3-pro-preview` (currently in preview)
+
+**Free tier:** 5 requests/minute (may need paid tier for full debates)
 
 **For higher limits:** Use Google Cloud Console at [console.cloud.google.com](https://console.cloud.google.com/) and enable the Gemini API with billing.
 
@@ -137,7 +143,9 @@ uv run python scripts/run_debate.py
    XAI_API_KEY=xai-xxxxx...
    ```
 
-**Note:** xAI's API is compatible with OpenAI's SDK format.
+**Model ID:** `grok-4`
+
+**Note:** xAI's API is compatible with OpenAI's SDK format (endpoint: `https://api.x.ai/v1`).
 
 ---
 
@@ -150,14 +158,28 @@ Test that your keys work:
 uv run python -c "
 from ai_debate.models import AnthropicModel
 m = AnthropicModel()
-print(f'✓ Anthropic: {m.name}')
+print(f'✓ Anthropic: {m.name} ({m.model_id})')
 "
 
 # Test OpenAI
 uv run python -c "
 from ai_debate.models import OpenAIModel
 m = OpenAIModel()
-print(f'✓ OpenAI: {m.name}')
+print(f'✓ OpenAI: {m.name} ({m.model_id})')
+"
+
+# Test Google
+uv run python -c "
+from ai_debate.models import GoogleModel
+m = GoogleModel()
+print(f'✓ Google: {m.name} ({m.model_id})')
+"
+
+# Test xAI
+uv run python -c "
+from ai_debate.models import XAIModel
+m = XAIModel()
+print(f'✓ xAI: {m.name} ({m.model_id})')
 "
 ```
 
