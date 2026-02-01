@@ -55,7 +55,7 @@ class OpenAIModel:
         response = await self._client.chat.completions.create(
             model=self.model_id,
             messages=openai_messages,
-            max_tokens=max_tokens,
+            max_completion_tokens=max_tokens,
             temperature=self.temperature,
         )
 
