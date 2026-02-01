@@ -43,7 +43,10 @@ htmlcov/
 .mypy_cache/
 
 # Debate outputs (can contain large transcripts)
-debates/
+debates/*
+results/*
+!debates/.gitkeep
+!results/.gitkeep
 
 # Environment variables
 .env
