@@ -11,7 +11,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from ai_debate.debate import DebateEngine, transcript_to_markdown
-from ai_debate.models import AnthropicModel, OpenAIModel
+from ai_debate.models import AnthropicModel, GoogleModel, OpenAIModel, XAIModel
+
+MODEL_MAP = {
+    "claude": AnthropicModel,
+    "gpt": OpenAIModel,
+    "gemini": GoogleModel,
+    "grok": XAIModel,
+}
+
+
+def init_model(key: str):
+    """Initialize a model by its short name."""
+    if key not in MODEL_MAP:
+        raise ValueError(f"Unknown model: {key!r}. Choose from: {', '.join(MODEL_MAP)}")
+    return MODEL_MAP[key]()
 
 
 async def main() -> None:
@@ -30,6 +44,18 @@ async def main() -> None:
         "--swap",
         action="store_true",
         help="Swap roles: GPT argues affirmative, Claude argues negative",
+    )
+    parser.add_argument(
+        "--judge",
+        action="store_true",
+        help="Run judging after the debate completes",
+    )
+    parser.add_argument(
+        "--judge-models",
+        type=str,
+        default=None,
+        help="Comma-separated judge model names (e.g. 'gemini,grok'). "
+             "Defaults to the 2 models not debating.",
     )
     args = parser.parse_args()
 
@@ -76,8 +102,38 @@ async def main() -> None:
 
     output_file = output_dir / f"debate-{transcript.id}.md"
     markdown = transcript_to_markdown(transcript)
-    output_file.write_text(markdown)
 
+    # Judging
+    if args.judge:
+        from ai_debate.judging import JudgePanel
+        from ai_debate.judging.judge import result_to_markdown
+
+        # Determine judge models
+        if args.judge_models:
+            judge_keys = [k.strip() for k in args.judge_models.split(",")]
+        else:
+            # Default: the 2 models not debating
+            debating = {"claude", "gpt"} if not args.swap else {"gpt", "claude"}
+            judge_keys = [k for k in MODEL_MAP if k not in debating]
+
+        print(f"\nInitializing judges: {', '.join(judge_keys)}")
+        judge_models = []
+        for key in judge_keys:
+            try:
+                model = init_model(key)
+                judge_models.append(model)
+                print(f"  {model.name} ({model.model_id})")
+            except (ValueError, Exception) as e:
+                print(f"  Error initializing {key}: {e}")
+
+        if judge_models:
+            panel = JudgePanel(judges=judge_models, verbose=True)
+            result = await panel.judge_debate(transcript)
+            markdown += result_to_markdown(transcript, result)
+        else:
+            print("  No judges available, skipping judging.")
+
+    output_file.write_text(markdown)
     print(f"\nTranscript saved to: {output_file}")
 
 
